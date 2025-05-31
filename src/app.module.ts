@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { AdminModule } from './admin/admin.module';
 import  config  from './config';
+import { Admin } from './admin/models/admin.model';
 
 @Module({
   imports: [
@@ -14,8 +16,9 @@ import  config  from './config';
       logging: false,
       synchronize: true,
       autoLoadModels: true,
-      models: []
-    })
+      models: [Admin]
+    }),
+    AdminModule
   ]
 })
 export class AppModule {}

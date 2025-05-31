@@ -9,5 +9,7 @@ export default {
     PG_PASS: String(process.env.PG_PASS),
     PG_DB: String(process.env.PG_DB),
     SUPERADMIN_USERNAME: String(process.env.SUPERADMIN_USERNAME),
+    SUPERADMIN_EMAIL: String(process.env.SUPERADMIN_EMAIL),
+    SUPERADMIN_PHONE: String(process.env.SUPERADMIN_PHONE),
     SUPERADMIN_PASSOWORD: String(process.env.SUPERADMIN_PASSWORD),
 }
