@@ -1,34 +1,47 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Delivery } from './model/delivery.model';
+import { Delivery } from './models/delivery.model';
 import { CreateDeliveryDto } from './dto/create-delivery.dto';
 import { UpdateDeliveryDto } from './dto/update-delivery.dto';
 
 @Injectable()
 export class DeliveryService {
   constructor(
-    @InjectModel(Delivery)
-    private deliveryModel: typeof Delivery,
+    @InjectModel(Delivery) private model: typeof Delivery,
   ) {}
 
-  create(createDeliveryDto: CreateDeliveryDto) {
-    return this.deliveryModel.create(createDeliveryDto);
+  async create(createDeliveryDto: CreateDeliveryDto): Promise<Delivery> {
+    const delivery = await this.model.create({ ...createDeliveryDto as any});
+    return delivery;
   }
 
-  findAll() {
-    return this.deliveryModel.findAll();
+  async findAll(): Promise<Delivery[]> {
+    return this.model.findAll();
   }
 
-  findOne(id: number) {
-    return this.deliveryModel.findByPk(id);
+  async findOne(id: number): Promise<Delivery | object> {
+    const delivery = await this.model.findByPk(id);
+    if (!delivery) {
+      return { message: 'not found' };
+    }
+    return delivery;
   }
 
-  async update(id: number, updateDeliveryDto: UpdateDeliveryDto) {
-    await this.deliveryModel.update(updateDeliveryDto, { where: { id } });
-    return this.findOne(id);
+  async update(id: number, updateDeliveryDto: UpdateDeliveryDto): Promise<Delivery | object> {
+    const [affectedCount, updated] = await this.model.update(updateDeliveryDto, {
+      where: { id },
+      returning: true,
+    });
+
+    if (affectedCount === 0) {
+      return { message: 'not found or not updated' };
+    }
+
+    return updated[0];
   }
 
-  remove(id: number) {
-    return this.deliveryModel.destroy({ where: { id } });
+  async remove(id: number): Promise<object> {
+    await this.model.destroy({ where: { id } });
+    return { message: 'success' };
   }
 }
