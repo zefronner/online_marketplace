@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { AdminModule } from './admin/admin.module';
-import config from './config';
-import { Admin } from './admin/models/admin.model';
+import { PaymentsModule } from './payments/payments.module';
 import { DeliveryModule } from './delivery/delivery.module';
-import { ImagesModule } from './images/images.module';
-import { Delivery } from './delivery/model/delivery.model';
+import { UsersModule } from './users/users.module';
+import  config  from './config';
 
 @Module({
   imports: [
@@ -19,11 +17,11 @@ import { Delivery } from './delivery/model/delivery.model';
       logging: false,
       synchronize: true,
       autoLoadModels: true,
-      models: [Admin, Delivery],
+      models: []
     }),
-    AdminModule,
+    PaymentsModule,
     DeliveryModule,
-    ImagesModule,
-  ],
+    UsersModule
+  ]
 })
 export class AppModule {}
