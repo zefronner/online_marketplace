@@ -5,6 +5,8 @@ import { DeliveryModule } from './delivery/delivery.module';
 // import { UsersModule } from './users/users.module';
 import { AdminModule } from './admin/admin.module';
 import  config  from './config';
+import { Category } from './category/model/category.model';
+import { Product } from './product/models/product.model';
 
 @Module({
   imports: [
@@ -18,7 +20,7 @@ import  config  from './config';
       logging: false,
       synchronize: true,
       autoLoadModels: true,
-      models: []
+      models: [Category, Product]
     }),
     PaymentsModule,
     DeliveryModule,
