@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { UserModule } from './user/user.module';
+import { ReviewModule } from './review/review.module';
 import config from './config';
 
 @Module({
@@ -15,7 +17,9 @@ import config from './config';
       logging: false,
       autoLoadModels: true,
       models: []
-    })
+    }),
+    UserModule,
+    ReviewModule
   ],
 })
 export class AppModule {}
