@@ -43,9 +43,4 @@ export class Admin extends Model {
     defaultValue: Status.INACTIVE,
   })
   status: string;
-
-  @Column({
-    type: DataType.STRING
-  })
-  image: string;
 }
