@@ -4,7 +4,7 @@ import { IsNotEmpty, IsEmail, IsPhoneNumber, IsString, IsStrongPassword } from "
 export class CreateAdminDto {
     @IsString()
     @IsNotEmpty()
-    usename: string;
+    username: string;
 
     @IsEmail()
     @IsNotEmpty()

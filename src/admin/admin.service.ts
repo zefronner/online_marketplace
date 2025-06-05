@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException, OnModuleInit, UnauthorizedException } from '@nestjs/common';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { Admin } from './models/admin.model';
@@ -14,6 +14,8 @@ import { Cache } from 'cache-manager';
 import { ConfirmSiginInAdminDto } from './dto/confirm-signin-admin.dto copy';
 import { TokenService } from 'src/utils/TokenService';
 import { Response } from 'express';
+import { SignInAdminDto } from './dto/signin-admin.dto';
+import { StatusAdminDto } from './dto/status-admin.dto';
 
 @Injectable()
 export class AdminService implements OnModuleInit{
@@ -76,7 +78,7 @@ export class AdminService implements OnModuleInit{
     }
   };
 
-  async signInAdmin(SignInDto: CreateAdminDto): Promise<object> {
+  async signInAdmin(SignInDto: SignInAdminDto): Promise<object> {
     try {
       const { email, password } = SignInDto;
       const admin = await this.adminModel.findOne({ where: { email }});
@@ -132,6 +134,66 @@ export class AdminService implements OnModuleInit{
     }
   }
 
+  async refreshTokenAdmin(refreshToken: string) {
+    const decodedToken =
+      await this.tokenService.verifyRefreshToken(refreshToken);
+    if (!decodedToken) {
+      throw new UnauthorizedException('Refresh token expired');
+    };
+    const admin = await this.findAdminById(decodedToken.id);
+    const payload = {
+      id: admin.id,
+      role: admin.role,
+      status: admin.status
+    };
+    const accessToken = await this.tokenService.generateAccessToken(payload);
+    return {
+      statusCode: 201,
+      message: "Success",
+      token: accessToken
+    }
+  };
+
+  async signOutAdmin(refreshToken: string, res: Response){
+    try {
+      const decodedToken =
+        await this.tokenService.verifyRefreshToken(refreshToken);
+      if (!decodedToken) {
+        throw new UnauthorizedException('Refresh token expired');
+      }
+      await this.findAdminById(decodedToken.id);
+      res.clearCookie('refreshTokenAdmin');
+      return {
+        statusCode: 201,
+        message: 'Admin signed out successfully'
+      }
+    } catch (error) {
+      return handleError(error);
+    }
+  }
+
+  async activeDeactiveAdmin(
+    id: number,
+    statusDto: StatusAdminDto,
+  ): Promise<object> {
+    try {
+      await this.findAdminById(id);
+      const updatedAdmin = await this.adminModel.update(
+        {
+          status: statusDto.status,
+        },
+        { where: { id }, returning: true },
+      );
+      return {
+        statusCode: 201,
+        message: 'success',
+        data: updatedAdmin[1][0]
+      };
+    } catch (error) {
+      return handleError(error);
+    }
+  }
+
   async findAll(): Promise<Admin[]> {
     return this.adminModel.findAll();
   };
@@ -145,6 +207,13 @@ export class AdminService implements OnModuleInit{
   };
 
   async updateAdmin (id: number, updateAdminDto: UpdateAdminDto): Promise<Admin> {
+    const { email } = updateAdminDto;
+      if (email) {
+        const existsEmail = await this.adminModel.findOne({ where: { email } });
+        if (id != existsEmail?.dataValues.id) {
+          throw new ConflictException('Email address already exists');
+        }
+      }
     const admin = await this.adminModel.update(
       updateAdminDto, 
       { where: { id }, returning: true }
@@ -158,4 +227,12 @@ export class AdminService implements OnModuleInit{
       message: 'Success'
     };
   };
+
+  async findAdminById(id: number): Promise<Admin> {
+    const admin = await this.adminModel.findByPk(id);
+    if (!admin) {
+      throw new NotFoundException(`Admin not found by ID ${id}`);
+    }
+    return admin.dataValues;
+  }
 }
