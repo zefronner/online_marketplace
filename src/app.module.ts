@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { PaymentsModule } from './payments/payments.module';
 import { DeliveryModule } from './delivery/delivery.module';
-import { UsersModule } from './users/users.module';
+import { LikesModule } from './likes/likes.module';
+import { CartModule } from './carts/cart.module';
 import  config  from './config';
 
 @Module({
@@ -21,7 +22,8 @@ import  config  from './config';
     }),
     PaymentsModule,
     DeliveryModule,
-    UsersModule
+    LikesModule,
+    CartModule
   ]
 })
 export class AppModule {}
