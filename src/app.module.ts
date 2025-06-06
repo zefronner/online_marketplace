@@ -4,7 +4,12 @@ import { PaymentsModule } from './payments/payments.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { LikesModule } from './likes/likes.module';
 import { CartModule } from './carts/cart.module';
+// import { UsersModule } from './users/users.module';
+import { AdminModule } from './admin/admin.module';
 import  config  from './config';
+import { MailModule } from './mail/mail.module';
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -20,10 +25,22 @@ import  config  from './config';
       autoLoadModels: true,
       models: []
     }),
+    CacheModule.register({
+      isGlobal: true
+    }),
+    MailModule,
     PaymentsModule,
     DeliveryModule,
     LikesModule,
     CartModule
+    AdminModule,
+    // UsersModule
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor
+    }
   ]
 })
 export class AppModule {}
