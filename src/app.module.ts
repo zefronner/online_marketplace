@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { PaymentsModule } from './payments/payments.module';
 import { DeliveryModule } from './delivery/delivery.module';
+import { LikesModule } from './likes/likes.module';
+import { CartModule } from './carts/cart.module';
 // import { UsersModule } from './users/users.module';
 import { AdminModule } from './admin/admin.module';
 import  config  from './config';
@@ -29,6 +31,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     MailModule,
     PaymentsModule,
     DeliveryModule,
+    LikesModule,
+    CartModule
     AdminModule,
     // UsersModule
   ],
