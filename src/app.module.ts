@@ -7,6 +7,8 @@ import { CartModule } from './carts/cart.module';
 // import { UsersModule } from './users/users.module';
 import { AdminModule } from './admin/admin.module';
 import  config  from './config';
+import { Category } from './category/model/category.model';
+import { Product } from './product/models/product.model';
 import { MailModule } from './mail/mail.module';
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { APP_INTERCEPTOR } from '@nestjs/core';
@@ -29,7 +31,7 @@ import { ReviewsModule } from './reviews/reviews.module';
       logging: false,
       synchronize: true,
       autoLoadModels: true,
-      models: []
+      models: [Category, Product]
     }),
     CacheModule.register({
       isGlobal: true
@@ -47,7 +49,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     LikesModule,
     CartModule
     AdminModule,
-    UsersModule,
+//     UsersModule,
     FileModule,
     ReviewsModule
     // UsersModule
