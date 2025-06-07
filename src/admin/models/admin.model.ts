@@ -35,7 +35,7 @@ export class Admin extends Model {
     allowNull: false,
     defaultValue: Roles.ADMIN,
   })
-  role: string;
+  role: Roles;
 
   @Column({
     type: DataType.ENUM(Status.ACTIVE, Status.INACTIVE),
@@ -43,9 +43,4 @@ export class Admin extends Model {
     defaultValue: Status.INACTIVE,
   })
   status: string;
-
-  @Column({
-    type: DataType.STRING
-  })
-  image: string;
 }

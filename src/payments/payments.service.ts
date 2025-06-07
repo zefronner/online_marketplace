@@ -1,30 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Payment } from './models/payment.model';
-import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { CreatePaymentDto } from './dto/create-payment.dto';
-import { DATE } from 'sequelize';
+import { UpdatePaymentDto } from './dto/update-payment.dto';
 
 @Injectable()
 export class PaymentsService {
   constructor(
-    @InjectModel(Payment) private model: typeof Payment,
+    @InjectModel(Payment) private readonly model: typeof Payment,
   ) {}
 
-  async  create(createPaymentDto: CreatePaymentDto):Promise<Payment> {
-    const group = await this.model.create({...createPaymentDto as any});
-    return group
+  async  create(createPaymentDto: CreatePaymentDto):Promise<Payment> {  
+    const payment = await this.model.create({...createPaymentDto as any});
+    return payment
   }
 
-  async findAll(): Promise<Payment[]> {
+  async findAll(): Promise<Payment[]> { 
     return this.model.findAll();
-  }
-
+  } 
+             
   async findOne(id: number): Promise<Payment | object> {
-    const payment = await this.model.findByPk(id);
+    const payment = await this.model.findByPk(id);   
     if (!payment) {
       return { message: 'not found' };
-    }
+    }  
     return payment;
   }
 
