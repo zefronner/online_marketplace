@@ -8,6 +8,12 @@ import  config  from './config';
 import { MailModule } from './mail/mail.module';
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { UsersModule } from './users/users.module';
+import { FileModule } from './file/file.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { resolve } from 'path';
+import { JwtModule } from '@nestjs/jwt';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
@@ -26,10 +32,20 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     CacheModule.register({
       isGlobal: true
     }),
+    ServeStaticModule.forRoot({
+      rootPath: resolve(__dirname, '..', '..', 'upload'),
+      serveRoot: '/upload',
+    }),
+    JwtModule.register({
+      global: true,
+    }),
     MailModule,
     PaymentsModule,
     DeliveryModule,
     AdminModule,
+    UsersModule,
+    FileModule,
+    ReviewsModule
     // UsersModule
   ],
   providers: [
