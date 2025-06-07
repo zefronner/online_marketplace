@@ -13,3 +13,8 @@ export enum OrderStatus {
     PENDING = 'pending',
     CANCELLED = 'cancelled'
 }
+
+export enum UserRoles {
+    CUSTOMER = 'customer',
+    SAILER = 'sailer'
+}
