@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Delivery } from './models/delivery.model';
 import { CreateDeliveryDto } from './dto/create-delivery.dto';
 import { UpdateDeliveryDto } from './dto/update-delivery.dto';
+import { handleError } from 'src/utils/catch-error';
+import { Orders } from 'src/orders/models/order.model';
 
 @Injectable()
 export class DeliveryService {
@@ -10,17 +12,27 @@ export class DeliveryService {
     @InjectModel(Delivery) private model: typeof Delivery,
   ) {}
 
-  async create(createDeliveryDto: CreateDeliveryDto): Promise<Delivery> {
-    const delivery = await this.model.create({ ...createDeliveryDto as any});
-    return delivery;
+  async create(createDeliveryDto: CreateDeliveryDto): Promise<object> {
+    try {
+      const newDelivery = await this.model.create({
+        ...createDeliveryDto
+      });
+      return { 
+        statusCode: 201,
+        message: "Success",
+        data: newDelivery
+      };
+    } catch (error) {
+      return handleError(error);
+    }
   }
 
   async findAll(): Promise<Delivery[]> {
-    return this.model.findAll();
+    return this.model.findAll({ include: { model: Orders }});
   }
 
   async findOne(id: number): Promise<Delivery | object> {
-    const delivery = await this.model.findByPk(id);
+    const delivery = await this.model.findByPk(id, { include: { model: Orders }});
     if (!delivery) {
       return { message: 'not found' };
     }
@@ -43,5 +55,5 @@ export class DeliveryService {
   async remove(id: number): Promise<object> {
     await this.model.destroy({ where: { id } });
     return { message: 'success' };
-  }
+  };
 }

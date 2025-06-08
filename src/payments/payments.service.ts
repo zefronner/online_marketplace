@@ -1,27 +1,39 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Payment } from './models/payment.model';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { CreatePaymentDto } from './dto/create-payment.dto';
-import { DATE } from 'sequelize';
+import { Orders } from 'src/orders/models/order.model';
+import { handleError } from 'src/utils/catch-error';
+import { error } from 'console';
 
 @Injectable()
 export class PaymentsService {
   constructor(
     @InjectModel(Payment) private model: typeof Payment,
+    @InjectModel(Orders) private orderModel: typeof Orders
   ) {}
 
-  async  create(createPaymentDto: CreatePaymentDto):Promise<Payment> {
-    const group = await this.model.create({...createPaymentDto as any});
-    return group
+  async  create(createPaymentDto: CreatePaymentDto):Promise<object> {
+    try{ 
+      const { orderId } = createPaymentDto;
+      const order = await this.orderModel.findByPk(orderId);
+      if(!order) {
+        throw new NotFoundException(`Order not found by id: ${orderId}`)
+      };
+      const group = await this.model.create({...createPaymentDto as any});
+      return { statusCode:201, message: 'success', data:group };
+    } catch {
+      return handleError(error);
+    }
   }
 
   async findAll(): Promise<Payment[]> {
-    return this.model.findAll();
+    return this.model.findAll({ include: { model: Orders }});
   }
 
   async findOne(id: number): Promise<Payment | object> {
-    const payment = await this.model.findByPk(id);
+    const payment = await this.model.findByPk(id, { include: { model: Orders }});
     if (!payment) {
       return { message: 'not found' };
     }
@@ -29,15 +41,20 @@ export class PaymentsService {
   }
 
   async update(id: number, updatePaymentDto: UpdatePaymentDto): Promise<Payment | object> {
+    const { orderId } = updatePaymentDto;
+    const order = await this.orderModel.findByPk(orderId);
+      if(!order) {
+        throw new NotFoundException(`Order not found by id: ${orderId}`)
+      };
     const payment = await this.model.update(
       updatePaymentDto,
-      {where:{id},returning:true}
+      { where:{id}, returning:true }
     )
-    return payment
+    return { statusCode: 201, message: "success", data: payment}
   }
 
   async remove(id: number): Promise<object> {
     await this.model.destroy({ where: { id } });
-    return { message: 'success' };
+    return {statusCode:201,  message: 'success' };
   }
 }

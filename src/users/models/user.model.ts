@@ -1,5 +1,6 @@
 import { Table, Model, Column, DataType, HasMany } from "sequelize-typescript";
 import { UserRoles } from "src/enum";
+import { Orders } from "src/orders/models/order.model";
 import { Review } from "src/reviews/model/review.model";
 
 @Table({ tableName: 'users' })
@@ -36,4 +37,7 @@ export class User extends Model {
 
     @HasMany(() => Review)
     reviews: Review[];
+
+    @HasMany(() => Orders)
+    orders: Orders[];
 }

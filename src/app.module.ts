@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { PaymentsModule } from './payments/payments.module';
 import { DeliveryModule } from './delivery/delivery.module';
-// import { UsersModule } from './users/users.module';
 import { AdminModule } from './admin/admin.module';
 import  config  from './config';
 import { MailModule } from './mail/mail.module';
@@ -14,6 +13,9 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
 import { JwtModule } from '@nestjs/jwt';
 import { ReviewsModule } from './reviews/reviews.module';
+import { CategoryModule } from './category/category.module';
+import { ProductModule } from './product/product.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -45,8 +47,11 @@ import { ReviewsModule } from './reviews/reviews.module';
     AdminModule,
     UsersModule,
     FileModule,
-    ReviewsModule
-    // UsersModule
+    ReviewsModule,
+    UsersModule,
+    CategoryModule,
+    ProductModule,
+    OrdersModule
   ],
   providers: [
     {
