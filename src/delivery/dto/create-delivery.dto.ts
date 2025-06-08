@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString, Matches } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsPhoneNumber, IsString, Matches } from 'class-validator';
 
 export class CreateDeliveryDto {
   @IsNumber()
@@ -10,6 +10,9 @@ export class CreateDeliveryDto {
   place: string;
 
   @IsString()
-  @Matches(/^\+?\d{9,15}$/, { message: 'Invalid phone number format' })
+  @IsPhoneNumber()
   phoneNumber: string;
+  
+  @IsString()
+  mapUrl:string;
 }

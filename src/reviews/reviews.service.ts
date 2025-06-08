@@ -5,12 +5,14 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Review } from './model/review.model';
 import { handleError } from 'src/utils/catch-error';
 import { User } from 'src/users/models/user.model';
+import { Product } from 'src/product/models/product.model';
 
 @Injectable()
 export class ReviewsService {
   constructor (
     @InjectModel(Review) private reviewModel: typeof Review,
-    @InjectModel(User) private userModel: typeof User
+    @InjectModel(User) private userModel: typeof User,
+    @InjectModel(Product) private productModel: typeof Product
   ) {}
 
   async create(createReviewDto: CreateReviewDto): Promise<object> {
@@ -19,6 +21,10 @@ export class ReviewsService {
       const user = await this.userModel.findByPk(userId);
       if (!user) {
         throw new NotFoundException(`User with ID ${createReviewDto.userId} does not exist`);
+      };
+      const product = await this.productModel.findByPk(productId);
+      if (!product) {
+        throw new NotFoundException(`Product with ID ${createReviewDto.productId} does not exist`);
       };
       const review = await this.reviewModel.create({
         ...createReviewDto
@@ -34,11 +40,11 @@ export class ReviewsService {
   }
 
   async findAll(): Promise<object> {
-    return await this.reviewModel.findAll({ include: [{ model: User }]});
+    return await this.reviewModel.findAll({ include: [{ model: User }, { model: Product }]});
   };
 
   async findOne(id: number): Promise<Review> {
-    const review = await this.reviewModel.findByPk(id);
+    const review = await this.reviewModel.findByPk(id,{ include: [{ model: User }, { model: Product }]});
     if(!review) {
       throw new NotFoundException('Id not found');
     }; 
@@ -51,6 +57,10 @@ export class ReviewsService {
     if (!user) {
       throw new NotFoundException(`User with ID ${updateReviewDto.userId} does not exist`);
     };
+    const product = await this.productModel.findByPk(productId);
+      if (!product) {
+        throw new NotFoundException(`Product with ID ${updateReviewDto.productId} does not exist`);
+      };
     const updatedReview = await this.reviewModel.update({
       ...updateReviewDto
     }, { where: { id }, returning: true });

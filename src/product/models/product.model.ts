@@ -1,3 +1,7 @@
+import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
+import { Category } from "src/category/model/category.model";
+import { Orders } from "src/orders/models/order.model";
+import { Review } from "src/reviews/model/review.model";
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { Category } from "src/category/model/category.model";
 
@@ -10,10 +14,10 @@ export class Product extends Model{
     name: string;
 
     @Column({
-        type: DataType.FLOAT,
+        type: DataType.DECIMAL(10,2),
         allowNull: false
     })
-    price: string
+    price: number
 
     @Column({
         type: DataType.INTEGER,
@@ -35,4 +39,9 @@ export class Product extends Model{
     })
     category: Category
 
+    @HasMany(() => Review)
+    reviews: Review[];
+
+    @HasMany(() => Orders)
+    orders: Orders
 }

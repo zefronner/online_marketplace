@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseInterceptors, UploadedFile, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseInterceptors, UploadedFile, UseGuards, ValidationPipe, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { SignInUserDto } from './dto/signin-user.dto';
 import { ConfirmSiginInUserDto } from './dto/confirm-signin-user.dto';
-import { Response } from 'express';
+import { request, Response } from 'express';
 import { GetCookie } from 'src/decorators/cookie.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageValiationPipe } from 'src/pipes/image-validation.pipe';
@@ -18,7 +18,7 @@ export class UsersController {
   @UseInterceptors(FileInterceptor('file'))
   @Post()
   create(@Body() createUserDto: CreateUserDto,
-  @UploadedFile( new ImageValiationPipe) file?: Express.Multer.File
+  @UploadedFile( new ImageValiationPipe, new ValidationPipe) file?: Express.Multer.File
   ) {
     return this.usersService.create(createUserDto, file);
   }
@@ -57,7 +57,7 @@ export class UsersController {
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(@Param('id') id: string, @Body(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }
 

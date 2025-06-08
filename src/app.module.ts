@@ -4,7 +4,6 @@ import { PaymentsModule } from './payments/payments.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { LikesModule } from './likes/likes.module';
 import { CartModule } from './carts/cart.module';
-// import { UsersModule } from './users/users.module';
 import { AdminModule } from './admin/admin.module';
 import  config  from './config';
 import { Category } from './category/model/category.model';
@@ -18,6 +17,9 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
 import { JwtModule } from '@nestjs/jwt';
 import { ReviewsModule } from './reviews/reviews.module';
+import { CategoryModule } from './category/category.module';
+import { ProductModule } from './product/product.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -49,10 +51,12 @@ import { ReviewsModule } from './reviews/reviews.module';
     LikesModule,
     CartModule
     AdminModule,
-//     UsersModule,
     FileModule,
-    ReviewsModule
-    // UsersModule
+    ReviewsModule,
+    UsersModule,
+    CategoryModule,
+    ProductModule,
+    OrdersModule
   ],
   providers: [
     {

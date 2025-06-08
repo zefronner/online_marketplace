@@ -1,12 +1,16 @@
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { Orders } from "src/orders/models/order.model";
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 @Table({ tableName: 'payments' })
 export class Payment extends Model<Payment> {
-  @Column({ type: DataType.BIGINT, autoIncrement: true, primaryKey: true })
-  declare id: number;
 
-  @Column({ type: DataType.BIGINT, allowNull: false })
+  @ForeignKey(() => Orders)
+  @Column({ type: DataType.INTEGER, allowNull: false })
   orderId: number;
+
+  @BelongsTo(() => Orders)
+  orders: Orders
 
   @Column({ type: DataType.ENUM('card', 'paypal', 'cash'), allowNull: false })
   paymentMethod: 'card' | 'paypal' | 'cash';
@@ -15,6 +19,7 @@ export class Payment extends Model<Payment> {
   amount: number;
 
   @Column({ type: DataType.ENUM('pending', 'paid', 'failed'), allowNull: false })
+  paymentStatus: string;
   paymentStatus: 'pending' | 'paid' | 'failed';
 
   @Column({ type: DataType.DATE, allowNull: false })

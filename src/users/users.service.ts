@@ -135,6 +135,8 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto, file?: Express.Multer.File,): Promise<User> {
     const user = await this.findUserById(id);
+    console.log(updateUserDto);
+    
     let image = user.image;
     if (file) {
       if (image && (await this.fileService.existFile(image))) {

@@ -3,6 +3,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Product } from './models/product.model';
+]import { Category } from 'src/category/model/category.model';
 
 @Injectable()
 export class ProductService {
@@ -25,7 +26,7 @@ export class ProductService {
 
   async findAll() {
     try {
-      const products = await this.ProductModel.findAll();
+      const products = await this.ProductModel.findAll({ include: { model: Category }});
       return {
         statusCode: 200,
         data: products
@@ -37,7 +38,7 @@ export class ProductService {
 
   async findOne(id: number) {
     try {
-      const product = await this.ProductModel.findByPk(id);
+      const product = await this.ProductModel.findByPk(id, { include: { model: Category }});
       if(!product){
         throw new NotFoundException(`Product id: ${id} topilmadi`)
       }      
@@ -62,7 +63,7 @@ export class ProductService {
           throw new ConflictException(`${updateProductDto.name} nomli Product Mavjud !!!`)
         }
       }
-      const updatedProduct = await product.update(updateProductDto)
+      const updatedProduct = await product.update(updateProductDto, { where: { id }, returning: true})
       return {
         statusCode: 200,
         message: 'Muvaffaqqiyatli yangilandi',

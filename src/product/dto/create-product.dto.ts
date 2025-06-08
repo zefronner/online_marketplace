@@ -5,7 +5,7 @@ export class CreateProductDto {
     @IsNotEmpty()
     name:string
 
-    @IsDecimal()
+    @IsNumber()
     @IsNotEmpty()
     price: number
 
