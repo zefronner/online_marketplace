@@ -6,10 +6,13 @@ import { LikesModule } from './likes/likes.module';
 import { CartModule } from './carts/cart.module';
 // import { UsersModule } from './users/users.module';
 import { AdminModule } from './admin/admin.module';
-import  config  from './config';
+import config from './config';
 import { MailModule } from './mail/mail.module';
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { FileModule } from './file/file.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { resolve } from 'path';
 
 @Module({
   imports: [
@@ -23,24 +26,29 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
       logging: false,
       synchronize: true,
       autoLoadModels: true,
-      models: []
+      models: [],
     }),
     CacheModule.register({
-      isGlobal: true
+      isGlobal: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: resolve(__dirname, '..', '..', 'uploads'),
+      serveRoot: '/upload',
     }),
     MailModule,
     PaymentsModule,
     DeliveryModule,
     LikesModule,
-    CartModule
+    CartModule,
     AdminModule,
+    FileModule,
     // UsersModule
   ],
   providers: [
     {
       provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor
-    }
-  ]
+      useClass: CacheInterceptor,
+    },
+  ],
 })
 export class AppModule {}

@@ -6,14 +6,16 @@ import { Admin } from './models/admin.model';
 import { MailModule } from 'src/mail/mail.module';
 import { JwtModule } from '@nestjs/jwt';
 import { TokenService } from 'src/utils/TokenService';
+import { FileModule } from 'src/file/file.module';
 
 @Module({
   imports: [
     SequelizeModule.forFeature([Admin]),
     MailModule,
+    FileModule,
     JwtModule.register({
-      global: true
-    })
+      global: true,
+    }),
   ],
   controllers: [AdminController],
   providers: [AdminService, TokenService],
