@@ -1,10 +1,8 @@
-import { IsEnum, IsNotEmpty, IsNumber } from "class-validator";
 import { IsEnum, IsNotEmpty, IsNumber, IsDateString } from 'class-validator';
 
 export class CreatePaymentDto {
   @IsNotEmpty()
   @IsNumber()
-  @IsNotEmpty()
   orderId: number;
 
   @IsNotEmpty()
@@ -19,7 +17,4 @@ export class CreatePaymentDto {
   @IsEnum(['pending', 'paid', 'failed'])
   paymentStatus: 'pending' | 'paid' | 'failed';
 
-  @IsNotEmpty()
-  @IsDateString()
-  paidAt: Date;
 }

@@ -3,7 +3,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Product } from './models/product.model';
-]import { Category } from 'src/category/model/category.model';
+import { Category } from 'src/category/model/category.model';
 
 @Injectable()
 export class ProductService {

@@ -20,6 +20,13 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
 import { OrdersModule } from './orders/orders.module';
+import { Review } from './reviews/model/review.model';
+import { Orders } from './orders/models/order.model';
+import { Like } from './likes/models/like.model';
+import { Cart } from './carts/models/cart.model';
+import { User } from './users/models/user.model';
+import { Delivery } from './delivery/models/delivery.model';
+import { Payment } from './payments/models/payment.model';
 
 @Module({
   imports: [
@@ -33,7 +40,7 @@ import { OrdersModule } from './orders/orders.module';
       logging: false,
       synchronize: true,
       autoLoadModels: true,
-      models: [Category, Product]
+      models: [Category, Product, Review, Orders, Cart, Like, User, Delivery, Payment]
     }),
     CacheModule.register({
       isGlobal: true
@@ -49,7 +56,7 @@ import { OrdersModule } from './orders/orders.module';
     PaymentsModule,
     DeliveryModule,
     LikesModule,
-    CartModule
+    CartModule,
     AdminModule,
     FileModule,
     ReviewsModule,

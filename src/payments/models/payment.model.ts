@@ -1,6 +1,5 @@
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { Orders } from "src/orders/models/order.model";
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 @Table({ tableName: 'payments' })
 export class Payment extends Model<Payment> {
@@ -17,11 +16,4 @@ export class Payment extends Model<Payment> {
 
   @Column({ type: DataType.DECIMAL(10, 2), allowNull: false })
   amount: number;
-
-  @Column({ type: DataType.ENUM('pending', 'paid', 'failed'), allowNull: false })
-  paymentStatus: string;
-  paymentStatus: 'pending' | 'paid' | 'failed';
-
-  @Column({ type: DataType.DATE, allowNull: false })
-  paidAt: Date;
 }

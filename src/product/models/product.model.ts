@@ -1,9 +1,8 @@
-import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
-import { Category } from "src/category/model/category.model";
 import { Orders } from "src/orders/models/order.model";
 import { Review } from "src/reviews/model/review.model";
-import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { BelongsTo, HasMany, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { Category } from "src/category/model/category.model";
+import { Cart } from "src/carts/models/cart.model";
 
 @Table({tableName: 'product'})
 export class Product extends Model{
@@ -43,5 +42,8 @@ export class Product extends Model{
     reviews: Review[];
 
     @HasMany(() => Orders)
-    orders: Orders
+    orders: Orders;
+
+    @HasMany(() => Cart)
+    carts: Cart;
 }

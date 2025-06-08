@@ -14,43 +14,41 @@ import {
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
-import { RolesGuard } from './guards/roles.guard';
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
-import { Roles } from './decorators/roles.decorator';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('payments')
-@UseGuards(RolesGuard)
 @UseInterceptors(LoggingInterceptor)
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
   @Post()
-  @Roles('admin')
+  @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe())
   create(@Body() dto: CreatePaymentDto) {
     return this.paymentsService.create(dto);
   }
 
   @Get()
-  @Roles('admin')
+  @UseGuards(AuthGuard)
   findAll() {
     return this.paymentsService.findAll();
   }
 
   @Get(':id')
-  @Roles('admin')
+  @UseGuards(AuthGuard)
   findOne(@Param('id') id: string) {
     return this.paymentsService.findOne(+id);
   }
 
   @Patch(':id')
-  @Roles('admin')
+  @UseGuards(AuthGuard)
   update(@Param('id') id: string, @Body() dto: UpdatePaymentDto) {
     return this.paymentsService.update(+id, dto);
   }
 
   @Delete(':id')
-  @Roles('admin')
+  @UseGuards(AuthGuard)
   remove(@Param('id') id: string) {
     return this.paymentsService.remove(+id);
   }
