@@ -14,7 +14,7 @@ export class PaymentsService {
     @InjectModel(Orders) private orderModel: typeof Orders
   ) {}
 
-  async  create(createPaymentDto: CreatePaymentDto):Promise<object> {
+  async create(createPaymentDto: CreatePaymentDto):Promise<object> {
     try{ 
       const { orderId } = createPaymentDto;
       const order = await this.orderModel.findByPk(orderId);
@@ -31,23 +31,9 @@ export class PaymentsService {
   async findAll(): Promise<Payment[]> {
     return this.model.findAll({ include: { model: Orders }});
   }
-
-  async findOne(id: number): Promise<Payment | object> {
-    const payment = await this.model.findByPk(id, { include: { model: Orders }});
-    @InjectModel(Payment) private readonly model: typeof Payment,
-  ) {}
-
-  async  create(createPaymentDto: CreatePaymentDto):Promise<Payment> {  
-    const payment = await this.model.create({...createPaymentDto as any});
-    return payment
-  }
-
-  async findAll(): Promise<Payment[]> { 
-    return this.model.findAll();
-  } 
              
   async findOne(id: number): Promise<Payment | object> {
-    const payment = await this.model.findByPk(id);   
+    const payment = await this.model.findByPk(id, { include: { model: Orders }});   
     if (!payment) {
       return { message: 'not found' };
     }  
