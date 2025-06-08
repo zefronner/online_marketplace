@@ -2,6 +2,8 @@ import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from "
 import { Category } from "src/category/model/category.model";
 import { Orders } from "src/orders/models/order.model";
 import { Review } from "src/reviews/model/review.model";
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { Category } from "src/category/model/category.model";
 
 @Table({tableName: 'product'})
 export class Product extends Model{

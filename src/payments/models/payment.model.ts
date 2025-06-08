@@ -1,7 +1,8 @@
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { Orders } from "src/orders/models/order.model";
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
-@Table({ tableName: "payments" })
+@Table({ tableName: 'payments' })
 export class Payment extends Model<Payment> {
 
   @ForeignKey(() => Orders)
@@ -12,11 +13,15 @@ export class Payment extends Model<Payment> {
   orders: Orders
 
   @Column({ type: DataType.ENUM('card', 'paypal', 'cash'), allowNull: false })
-  paymentMethod: string;
+  paymentMethod: 'card' | 'paypal' | 'cash';
 
   @Column({ type: DataType.DECIMAL(10, 2), allowNull: false })
   amount: number;
 
   @Column({ type: DataType.ENUM('pending', 'paid', 'failed'), allowNull: false })
   paymentStatus: string;
+  paymentStatus: 'pending' | 'paid' | 'failed';
+
+  @Column({ type: DataType.DATE, allowNull: false })
+  paidAt: Date;
 }
