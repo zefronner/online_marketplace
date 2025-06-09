@@ -1,4 +1,4 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, AllowNull } from 'sequelize-typescript';
 
 @Table({ tableName: 'Users', timestamps: true })
 export class User extends Model<User> {
@@ -13,7 +13,7 @@ export class User extends Model<User> {
     type: DataType.STRING,
     allowNull: false,
   })
-  name: string;
+  username: string;
 
   @Column({
     type: DataType.STRING,
@@ -21,6 +21,13 @@ export class User extends Model<User> {
     unique: true,
   })
   email: string;
+
+  @Column({
+    type:DataType.STRING,
+    allowNull: false,
+    unique:true,
+  })
+  password: string;
 
   @Column({
     type: DataType.ENUM('customer', 'admin'),

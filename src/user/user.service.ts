@@ -33,4 +33,8 @@ export class UserService {
   remove(id: number) {
     return this.userModel.destroy({ where: { id } });
   }
+
+  async findByUsername(username: string) {
+    return this.userModel.findOne({ where: { username  }});
+  }
 }
