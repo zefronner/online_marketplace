@@ -12,12 +12,12 @@ export class Cart extends Model {
   user: User;  
 
   @ForeignKey(() => Product)
-  products: Product;
-
   @Column({ type: DataType.BIGINT, allowNull: false })
   productId: number;
 
+  @BelongsTo(() => Product)
+  products: Product;
+
   @Column({ type: DataType.INTEGER, allowNull: false })
   amount: number;
-
 }

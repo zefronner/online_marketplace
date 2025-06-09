@@ -77,6 +77,7 @@ export class AdminController {
   }
 
   @UseGuards(AuthGuard, SelfGuard)
+  @CheckRoles(Roles.SUPERADMIN)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
     return this.adminService.updateAdmin(+id, updateAdminDto);

@@ -23,33 +23,33 @@ import { AuthGuard } from 'src/guards/auth.guard';
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
-  @Post()
   @UseGuards(AuthGuard)
   @UsePipes(new ValidationPipe())
+  @Post()
   create(@Body() dto: CreateCartDto) {
     return this.cartService.create(dto);
   }
 
-  @Get()
   @UseGuards(AuthGuard)
+  @Get()
   findAll() {
     return this.cartService.findAll();
   }
 
-  @Get(':id')
   @UseGuards(AuthGuard)
+  @Get(':id')
   findOne(@Param('id') id: string) {
     return this.cartService.findOne(+id);
   }
 
-  @Patch(':id')
   @UseGuards(AuthGuard)
+  @Patch(':id')
   update(@Param('id') id: string, @Body() dto: UpdateCartDto) {
     return this.cartService.update(+id, dto);
   }
 
-  @Delete(':id')
   @UseGuards(AuthGuard)
+  @Delete(':id')
   remove(@Param('id') id: string) {
     return this.cartService.remove(+id);
   }
