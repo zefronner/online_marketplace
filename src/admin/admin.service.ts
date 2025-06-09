@@ -73,7 +73,7 @@ export class AdminService implements OnModuleInit{
         message: 'success',
         data: admin,
       };
-    } catch (error) {
+    } catch (error) {   
       return handleError(error);
     }
   };

@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { PaymentsModule } from './payments/payments.module';
 import { DeliveryModule } from './delivery/delivery.module';
-import { LikesModule } from './likes/likes.module';
 import { CartModule } from './carts/cart.module';
 import { AdminModule } from './admin/admin.module';
 import  config  from './config';
@@ -22,7 +21,6 @@ import { ProductModule } from './product/product.module';
 import { OrdersModule } from './orders/orders.module';
 import { Review } from './reviews/model/review.model';
 import { Orders } from './orders/models/order.model';
-import { Like } from './likes/models/like.model';
 import { Cart } from './carts/models/cart.model';
 import { User } from './users/models/user.model';
 import { Delivery } from './delivery/models/delivery.model';
@@ -40,7 +38,7 @@ import { Payment } from './payments/models/payment.model';
       logging: false,
       synchronize: true,
       autoLoadModels: true,
-      models: [Category, Product, Review, Orders, Cart, Like, User, Delivery, Payment]
+      models: [Category, Product, Review, Orders, Cart, User, Delivery, Payment]
     }),
     CacheModule.register({
       isGlobal: true
@@ -55,7 +53,6 @@ import { Payment } from './payments/models/payment.model';
     MailModule,
     PaymentsModule,
     DeliveryModule,
-    LikesModule,
     CartModule,
     AdminModule,
     FileModule,

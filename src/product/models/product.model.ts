@@ -45,5 +45,5 @@ export class Product extends Model{
     orders: Orders;
 
     @HasMany(() => Cart)
-    carts: Cart;
+    carts: Cart[];
 }
