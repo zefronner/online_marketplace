@@ -7,14 +7,14 @@ export class Category extends Model {
     type: DataType.STRING,
     allowNull: false,
   })
-  title!: string;
+  title: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  description!: string;
+  description: string;
 
   @HasMany(() => Product)
-  products!: Product[];
+  products: Product[];
 }
